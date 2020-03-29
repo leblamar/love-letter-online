@@ -8,7 +8,7 @@
         <PlayingRoom />
       </div>
       <div v-else>
-        coucou
+        <FinishRoom />
       </div>
     </div>
   </div>
@@ -18,11 +18,13 @@ import { mapState } from 'vuex'
 
 import WaitingRoom from "@/components/WaitingRoom"
 import PlayingRoom from "@/components/PlayingRoom"
+import FinishRoom from "@/components/FinishRoom"
 
 export default {
   components: {
     WaitingRoom,
-    PlayingRoom
+    PlayingRoom,
+    FinishRoom
   },
   computed: {
     ...mapState({
@@ -39,6 +41,7 @@ export default {
       this.$store.commit('setGame', game)
     },
     launchGame: function (game) {
+      this.hasFinished = false
       this.$store.commit('setGame', game)
     },
     playerTurn: function (game) {

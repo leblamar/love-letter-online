@@ -9,6 +9,7 @@ module.exports = {
             array[i] = array[j]
             array[j] = temp
         }
+        return array
     }
 }
 

@@ -5,7 +5,7 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        sm="6"
+        sm="8"
       >
         <div class="display-1">
           My hand
@@ -39,7 +39,7 @@
                 Choisir un adversaire
               </v-card-title>
               <v-select
-                :items="game.players"
+                :items="game.players.filter(player => !player.hasHandmaid)"
                 :value="game.players[0]"
                 item-text="username"
                 item-value="id"
@@ -49,7 +49,7 @@
               ></v-select>
               <v-select
                 v-if="hasToGuess"
-                :items="cards"
+                :items="cards.filter((card) => card != this.cards[1])"
                 label="Guess"
                 v-model="guess"
                 solo
@@ -106,7 +106,7 @@
                 <span v-if="player.hasSpy">
                   | SPY
                 </span>
-                <span v-if="player.hasHandMaid">
+                <span v-if="player.hasHandmaid">
                   | HANDMAID
                 </span>
               </v-list-item-title>
@@ -119,19 +119,25 @@
         <div class="display-1">
           Messages
         </div>
-        <v-list>
-          <v-list-item
-            v-for="(message, index) in messages"
-            :key="index"
-          >
-            <v-list-item-content>
-              <v-list-item-title
-                class="title"
-                v-text="message"
-              ></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+        <v-container
+          class="overflox-y-auto"
+          style="max-height: 400px;"
+        >
+
+          <v-list>
+            <v-list-item
+              v-for="(message, index) in messages"
+              :key="index"
+            >
+              <v-list-item-content>
+                <v-list-item-title
+                  class="title"
+                  v-text="message"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-container>
 
       </v-col>
     </v-row>

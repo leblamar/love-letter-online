@@ -38,7 +38,10 @@
           justify="center"
           v-if="isHost"
         >
-          <v-btn @click="launchGame()">
+          <v-btn
+            :disabled="!isGameReady"
+            @click="launchGame()"
+          >
             Lancer la partie
           </v-btn>
         </v-row>

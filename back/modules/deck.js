@@ -16,8 +16,8 @@ defaultDeck = [
 class Deck {
     constructor() {
         // pile de carte
-        this.cards = [...defaultDeck]
-        // this.cards = utils.shuffle([...defaultDeck])
+        // this.cards = [...defaultDeck]
+        this.cards = utils.shuffle([...defaultDeck])
         this.discardDeck = []
     }
     nextCard () {
