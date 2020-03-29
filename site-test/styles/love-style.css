@@ -1,0 +1,97 @@
+html {
+    font-size: 20px;
+    font-family: 'Lovers Quarrel', cursive;
+    background-image: url('../images/love-letter-accueil.jpg');
+}
+
+h1 {
+    font-size: 120px;
+    text-align: center;
+    margin: 0;
+    padding: 20px 0;
+    color: #F0C300;
+    text-shadow: 3px 3px 1px black;
+}
+
+body {
+    margin: 0 auto;
+    padding: 0 20px 20px 20px;
+}
+
+#cards {
+    overflow: auto;
+    text-align: center;
+    font-size: 40px;
+    width: 600px;
+    height: 690px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 1em;
+    margin: 0 auto;
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    color: #F0C300;
+}
+
+#card {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 20px;
+}
+
+#cardDesc {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cardDesc {
+    font-size: 40px;
+}
+
+form {
+    width: 320px;
+    height: 220px;
+    padding: 20px;
+    border: 1px solid #CCC;
+    border-radius: 1em;
+    margin: 0 auto;
+}
+
+input {
+    font: 1em 'Lovers Quarrel';
+    font-size: 30px;
+}
+
+#rules {
+    overflow: auto;
+    text-align: justify;
+    font-size: 40px;
+    width: 600px;
+    height: 690px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 1em;
+    margin: 0 auto;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: #F0C300;
+}
+
+#username {
+    width: 305px;
+}
+
+#create {
+    width: 320px;
+}
+
+#gameID {
+    width: 100px;
+}
+
+#join {
+    width: 200px;
+}
