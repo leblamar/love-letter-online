@@ -8,8 +8,10 @@ class Player {
         // Status
         this.hasSpy = false
         this.hasHandmaid = false
-        this.opponentCard = false
+        this.opponent = null
         this.isDead = false
+
+        this.points = 0
     }
     // Cards
     setCard (card) {
@@ -37,7 +39,7 @@ class Player {
     // Status
     removeTemporaryStatus () {
         this.hasHandmaid = false
-        this.opponentCard = null
+        this.opponent = null
     }
     hasPlayedSpy () {
         this.hasSpy = true
@@ -46,7 +48,7 @@ class Player {
         this.hasHandmaid = true
     }
     hasPlayedPriest (opponent) {
-        this.opponentCard = opponent.card
+        this.opponent = opponent
     }
     died () {
         this.isDead = true

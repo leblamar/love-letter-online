@@ -37,7 +37,7 @@ class Game {
     }
     // Game finished
     isFinished () {
-        return this.deck.isEmpty() || this.alivePlayers == 1
+        return this.deck.isEmpty() || this.alivePlayers <= 1
     }
 
     // Game started
@@ -47,8 +47,7 @@ class Game {
         player.setNextCard(this.deck.nextCard())
     }
     nextTurn () {
-
-        this.currentPlayer = (this.currentPlayer++) % this.players.length
+        this.currentPlayer = (++this.currentPlayer) % this.players.length
         while (this.currentPlayer.isDead) {
             this.currentPlayer = (this.currentPlayer++) % this.players.length
         }
@@ -78,6 +77,7 @@ class Game {
     playTurn (play) {
         // Current Player
         var player = this.players[this.currentPlayer]
+        player.removeTemporaryStatus()
 
         //
         var { playedCard } = play
@@ -106,22 +106,27 @@ class Game {
                     this.killPlayer(opponentPlayer)
                     message = player.username + " killed " + opponentPlayer.username + " with a guard"
                 }
-                message = player.username + " missed his shot"
+                else {
+                    message = player.username + " missed his shot"
+                }
                 break
 
             // Priest
             case 2:
-                player.hasPlayedPriest(opponentPlayer)
+                player.hasPlayedPriest({
+                    id: opponentPlayer.id,
+                    card: opponentPlayer.card
+                })
                 message = player.username + " made his best pray"
                 break
 
             // Baron
             case 3:
-                if (opponentPlayer.card.id < player.card.id) {
+                if (opponentPlayer.card < player.card) {
                     this.killPlayer(opponentPlayer)
                     message = player.username + " has a bigger one"
                 }
-                else if (opponentPlayer.card.id > player.card.id) {
+                else if (opponentPlayer.card > player.card) {
                     this.killPlayer(player)
                     message = opponentPlayer.username + " has a bigger one"
                 } else {
@@ -132,7 +137,7 @@ class Game {
             // Handmaid
             case 4:
                 player.hasPlayedHandmaid()
-                message = player.username + "is protected until the next turn"
+                message = player.username + " is protected until the next turn"
                 break
             // Prince
             case 5:
@@ -148,7 +153,8 @@ class Game {
 
             // Chancellor
             case 6:
-                player.setNextCards(this.deck.nextCard(), this.deck.nextCard())
+                player.setNextCards(this.deck.next2Cards())
+                message = player.username + " is choosing ..."
                 break
 
             // King
@@ -175,6 +181,19 @@ class Game {
         // this.currentPlayer = (this.currentPlayer + 1) % this.players.length
 
         return message
+    }
+
+    // Game end
+    // Point
+    checkPoint () {
+        var players = this.players.filter((player) => !player.isDead)
+
+        // Carte la plus haute
+        var maxCard = Math.max(...players.map(player => player.card))
+        players.filter(player => player.card == maxCard).forEach(player => player.points++)
+
+        // Espionne
+        players.filter((player) => player.hasSpy).forEach(player => player.points++)
     }
 }
 

@@ -5,7 +5,7 @@
     <v-row justify="center">
       <v-col
         cols="12"
-        sm="6"
+        sm="8"
       >
         <div class="display-1">
           My hand
@@ -22,10 +22,6 @@
 
         <div v-else>
 
-          <div class="headline">
-            Choose a card
-          </div>
-
           <!-- Opponent -->
           <v-dialog
             v-model="hasToChooseAnOpponent"
@@ -39,7 +35,7 @@
                 Choisir un adversaire
               </v-card-title>
               <v-select
-                :items="game.players"
+                :items="game.players.filter(player => !player.hasHandmaid)"
                 :value="game.players[0]"
                 item-text="username"
                 item-value="id"
@@ -49,7 +45,7 @@
               ></v-select>
               <v-select
                 v-if="hasToGuess"
-                :items="cards"
+                :items="cards.filter((card) => card != this.cards[1])"
                 label="Guess"
                 v-model="guess"
                 solo
@@ -67,27 +63,41 @@
             </v-card>
           </v-dialog>
 
+          <!-- Chancellor -->
+          <div v-if="hasToChoose2Cards">
+            <div class="headline">
+              Choose 2 cards
+            </div>
+            <v-row justify="center">
+              <v-card
+                class="mx-2"
+                @click="chancellorCard(card)"
+                v-for="(card, index) in [player.card, ...player.nextCards]"
+                :key="index"
+              >
+                <v-card-title>
+                  {{ card }}
+                </v-card-title>
+              </v-card>
+            </v-row>
+          </div>
+
           <!-- Cards -->
-          <v-row justify="center">
-            <v-card
-              class="mx-2"
-              @click="selectCard(player.card)"
-            >
-              <v-card-title>
-                {{ player.card }}
-              </v-card-title>
-            </v-card>
-            <v-card
-              class="mx-2"
-              @click="selectCard(card)"
-              v-for="(card, index) in player.nextCards"
-              :key="index"
-            >
-              <v-card-title>
-                {{ card }}
-              </v-card-title>
-            </v-card>
-          </v-row>
+          <div v-else>
+            <v-row justify="center">
+              <v-card
+                class="mx-2"
+                @click="selectCard(card)"
+                v-for="(card, index) in [player.card, ...player.nextCards]"
+                :key="index"
+              >
+                <v-card-title>
+                  {{ card }}
+                </v-card-title>
+              </v-card>
+            </v-row>
+          </div>
+
         </div>
 
         <div class="display-1">
@@ -95,19 +105,22 @@
         </div>
         <v-list>
           <v-list-item
-            v-for="player in game.players"
-            :key="player.username"
+            v-for="gamePlayer in game.players"
+            :key="gamePlayer.username"
           >
             <v-list-item-content>
               <v-list-item-title class="title">
                 <span>
-                  {{ player.username }}
+                  {{ gamePlayer.username }}
                 </span>
-                <span v-if="player.hasSpy">
+                <span v-if="gamePlayer.hasSpy">
                   | SPY
                 </span>
-                <span v-if="player.hasHandMaid">
+                <span v-if="gamePlayer.hasHandmaid">
                   | HANDMAID
+                </span>
+                <span v-if="player.opponent && gamePlayer.id == player.opponent.id">
+                  | {{ player.opponent.card }}
                 </span>
               </v-list-item-title>
             </v-list-item-content>
@@ -119,19 +132,25 @@
         <div class="display-1">
           Messages
         </div>
-        <v-list>
-          <v-list-item
-            v-for="(message, index) in messages"
-            :key="index"
-          >
-            <v-list-item-content>
-              <v-list-item-title
-                class="title"
-                v-text="message"
-              ></v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+        <v-container
+          class="overflox-y-auto"
+          style="max-height: 400px;"
+        >
+
+          <v-list>
+            <v-list-item
+              v-for="(message, index) in messages"
+              :key="index"
+            >
+              <v-list-item-content>
+                <v-list-item-title
+                  class="title"
+                  v-text="message"
+                ></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-container>
 
       </v-col>
     </v-row>
@@ -155,11 +174,25 @@ export default {
   data () {
     return {
       cardId: null,
+      // Chancellor
+      hasToChoose2Cards: false,
+      choosenCards: [],
+      // Attack card
       hasToChooseAnOpponent: false,
       opponent: null,
+      // Guard
       hasToGuess: false,
       guess: null,
+      // cards
       cards: ["Spy", "Guard", "Priest", "Baron", "Handmaid", "Prince", "Chancellor", "King", "Countess", "Princess"]
+    }
+  },
+  sockets: {
+    chancellorStart: function (game) {
+      if (this.isMyTurn) {
+        this.$store.commit('setGame', game)
+        this.hasToChoose2Cards = true
+      }
     }
   },
   methods: {
@@ -167,7 +200,10 @@ export default {
       this.cardId = cardId
 
       if (cardId == 0 || cardId == 4 || cardId == 6 || cardId == 8 || cardId == 9) {
-        this.socketCardSelected(cardId)
+        this.$socket.emit('cardSelected', {
+          gameId: this.game.id,
+          playedCard: cardId
+        })
       }
       else {
         this.hasToChooseAnOpponent = true
@@ -189,10 +225,15 @@ export default {
       this.hasToGuess = false
       this.hasToChooseAnOpponent = false
     },
-    socketCardSelected (cardId) {
-      this.$socket.emit('cardSelected', {
+    chancellorCard (card) {
+      this.choosenCards.push(card)
+      if (this.choosenCards.length == 2) this.chancellor()
+    },
+    chancellor () {
+      this.hasToChoose2Cards = false
+      this.$socket.emit('chancellorEnd', {
         gameId: this.game.id,
-        playedCard: cardId
+        cards: this.choosenCards
       })
     }
   },

@@ -16,16 +16,36 @@ defaultDeck = [
 class Deck {
     constructor() {
         // pile de carte
-        this.cards = [...defaultDeck]
-        // this.cards = utils.shuffle([...defaultDeck])
+        // this.cards = [...defaultDeck]
+        this.cards = utils.shuffle([...defaultDeck])
         this.discardDeck = []
     }
+
+    // Draw card
     nextCard () {
         return this.cards.pop()
     }
+    next2Cards () {
+        if (this.cards.length == 0) {
+            return []
+        }
+        else if (this.cards.length == 1) {
+            return [this.nextCard()]
+        }
+        return [this.nextCard(), this.nextCard()]
+    }
+
+    // Discard card
     discardCard (card) {
         this.discardDeck.push(card)
     }
+
+    // Chancellor
+    getChancellored (cards) {
+        this.cards.unshift(...cards)
+    }
+
+    // 
     isEmpty () {
         return this.cards.length == 0
     }

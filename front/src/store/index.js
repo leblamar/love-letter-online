@@ -55,7 +55,7 @@ export default new Vuex.Store({
       state.player = game.players.find((player) => player.id == state.player.id)
       // console.log(game)
     },
-    resetMessage (state) {
+    resetMessages (state) {
       state.messages = []
     },
     addMessage (state, message) {
