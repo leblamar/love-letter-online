@@ -40,9 +40,10 @@ export default {
     newPlayer: function (game) {
       this.$store.commit('setGame', game)
     },
-    launchGame: function (game) {
-      this.hasFinished = false
+    gameLaunched: function (game) {
+      this.$store.commit('resetMessages')
       this.$store.commit('setGame', game)
+      this.hasFinished = false
     },
     playerTurn: function (game) {
       this.$store.commit('setGame', game)

@@ -95,19 +95,22 @@
         </div>
         <v-list>
           <v-list-item
-            v-for="player in game.players"
-            :key="player.username"
+            v-for="gamePlayer in game.players"
+            :key="gamePlayer.username"
           >
             <v-list-item-content>
               <v-list-item-title class="title">
                 <span>
-                  {{ player.username }}
+                  {{ gamePlayer.username }}
                 </span>
-                <span v-if="player.hasSpy">
+                <span v-if="gamePlayer.hasSpy">
                   | SPY
                 </span>
-                <span v-if="player.hasHandmaid">
+                <span v-if="gamePlayer.hasHandmaid">
                   | HANDMAID
+                </span>
+                <span v-if="player.opponent && gamePlayer.id == player.opponent.id">
+                  | {{ player.opponent.card }}
                 </span>
               </v-list-item-title>
             </v-list-item-content>

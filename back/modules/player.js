@@ -10,6 +10,8 @@ class Player {
         this.hasHandmaid = false
         this.opponent = null
         this.isDead = false
+
+        this.points = 0
     }
     // Cards
     setCard (card) {

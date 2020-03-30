@@ -102,7 +102,6 @@ class Game {
 
             // Guard
             case 1:
-                console.log("op card : " + opponentPlayer.card)
                 if (opponentPlayer.card == guess) {
                     this.killPlayer(opponentPlayer)
                     message = player.username + " killed " + opponentPlayer.username + " with a guard"
@@ -178,6 +177,19 @@ class Game {
         // this.currentPlayer = (this.currentPlayer + 1) % this.players.length
 
         return message
+    }
+
+    // Game end
+    // Point
+    checkPoint () {
+        var players = this.players.filter((player) => !player.isDead)
+
+        // Carte la plus haute
+        var maxCard = Math.max(...players.map(player => player.card))
+        players.filter(player => player.card == maxCard).forEach(player => player.points++)
+
+        // Espionne
+        players.filter((player) => player.hasSpy).forEach(player => player.points++)
     }
 }
 

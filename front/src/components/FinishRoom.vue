@@ -22,15 +22,34 @@
         <v-list>
           <v-list-item
             v-for="(player, index) in game.players.filter(player => !player.isDead).sort((a, b) => a.card > b.card)"
-            :key="player.username"
+            :key="index"
           >
+            <v-list-item-icon>
+              <v-avatar
+                color="purple"
+                size="40"
+                tile
+              >
+                <span class="white--text headline">{{ player.card }}</span>
+              </v-avatar>
+            </v-list-item-icon>
+
             <v-list-item-content>
-              <v-list-item-title class="title">
-                {{index + 1}} -
-                {{player.username}}
-                {{player.card}}
-              </v-list-item-title>
+              <v-list-item-title
+                class="title"
+                v-text="player.username"
+              ></v-list-item-title>
             </v-list-item-content>
+
+            <v-list-item-icon>
+              <v-avatar
+                color="orange"
+                size="40"
+              >
+                <span class="white--text headline">{{ player.points }}</span>
+              </v-avatar>
+            </v-list-item-icon>
+
           </v-list-item>
         </v-list>
 
@@ -41,6 +60,7 @@
         </div>
         <v-list>
           <v-list-item
+            class="my-2"
             v-for="player in game.players.filter(player => player.isDead)"
             :key="player.username"
           >
@@ -49,28 +69,44 @@
                 {{player.username}}
               </v-list-item-title>
             </v-list-item-content>
+
+            <v-list-item-icon>
+              <v-avatar
+                color="orange"
+                size="40"
+              >
+                <span class="white--text headline">{{ player.points }}</span>
+              </v-avatar>
+            </v-list-item-icon>
           </v-list-item>
         </v-list>
 
         <br>
-        <!-- <v-row justify="center">
+        <v-row
+          v-if="isHost"
+          justify="center"
+        >
           <v-btn @click="launchGame()">
             Recommencer une partie
           </v-btn>
-        </v-row> -->
+        </v-row>
       </v-col>
     </v-row>
 
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   computed: {
     ...mapState({
       game: 'game'
     }),
+
+    ...mapGetters([
+      'isHost',
+    ]),
   },
   methods: {
     launchGame () {

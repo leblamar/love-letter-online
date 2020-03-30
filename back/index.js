@@ -67,6 +67,9 @@ io.on('connection', function (socket) {
     socket.on('launchGame', function (id) {
         var game = games.find((game) => game.id == id)
         game.launchGame()
+        // Game launched
+        socket.emit('gameLaunched', game)
+        socket.broadcast.to(game.socket).emit('gameLaunched', game)
 
         // Player turn 
         game.playerTurn()
@@ -77,7 +80,7 @@ io.on('connection', function (socket) {
 
     socket.on('cardSelected', function (data) {
         console.log(data)
-        var { gameId, playedCard, opponent } = data
+        var { playerId, gameId, playedCard, opponent, guess } = data
 
         var game = games.find((game) => game.id == gameId)
 
@@ -88,13 +91,15 @@ io.on('connection', function (socket) {
 
         var message = game.playTurn({
             playedCard,
-            opponent
+            opponent,
+            guess
         })
 
         socket.emit('cardEffect', message)
         socket.broadcast.to(game.socket).emit('cardEffect', message)
 
         if (game.isFinished()) {
+            game.checkPoint()
             socket.emit('gameEnd', game)
             socket.broadcast.to(game.socket).emit('gameEnd', game)
             return
