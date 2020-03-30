@@ -113,7 +113,10 @@ class Game {
 
             // Priest
             case 2:
-                player.hasPlayedPriest(opponentPlayer)
+                player.hasPlayedPriest({
+                    id: opponentPlayer.id,
+                    card: opponentPlayer.card
+                })
                 message = player.username + " made his best pray"
                 break
 
@@ -150,7 +153,8 @@ class Game {
 
             // Chancellor
             case 6:
-                // player.setNextCards(this.deck.nextCard(), this.deck.nextCard())
+                player.setNextCards(this.deck.next2Cards())
+                message = player.username + " is choosing ..."
                 break
 
             // King

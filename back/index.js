@@ -86,18 +86,22 @@ io.on('connection', function (socket) {
 
         // Card Alert
         var message = game.playerPlayMessage(playedCard, opponent)
+        // Socket card alert
         socket.emit('cardSelected', message)
         socket.broadcast.to(game.socket).emit('cardSelected', message)
 
+        // Card effect
         var message = game.playTurn({
             playedCard,
             opponent,
             guess
         })
 
+        // Socket card effect
         socket.emit('cardEffect', message)
         socket.broadcast.to(game.socket).emit('cardEffect', message)
 
+        // Game end
         if (game.isFinished()) {
             game.checkPoint()
             socket.emit('gameEnd', game)
@@ -105,11 +109,33 @@ io.on('connection', function (socket) {
             return
         }
 
+        // Chancellor turn
+        if (playedCard == 6) {
+            socket.emit('chancellorStart', game)
+            socket.broadcast.to(game.socket).emit('chancellorStart', game)
+            return
+        }
+
+        // Next turn
         game.nextTurn()
         socket.emit('playerTurn', game)
         socket.broadcast.to(game.socket).emit('playerTurn', game)
     })
 
+    // Chancellor mange tes morts
+    socket.on('chancellorEnd', function (data) {
+        console.log(data)
+        var { playerId, gameId, cards } = data
+
+        var game = games.find((game) => game.id == gameId)
+
+        game.deck.getChancellored(cards)
+
+        // Next turn
+        game.nextTurn()
+        socket.emit('playerTurn', game)
+        socket.broadcast.to(game.socket).emit('playerTurn', game)
+    })
 
     /**
      * Notify the players about the victor.

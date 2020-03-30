@@ -22,10 +22,6 @@
 
         <div v-else>
 
-          <div class="headline">
-            Choose a card
-          </div>
-
           <!-- Opponent -->
           <v-dialog
             v-model="hasToChooseAnOpponent"
@@ -67,27 +63,41 @@
             </v-card>
           </v-dialog>
 
+          <!-- Chancellor -->
+          <div v-if="hasToChoose2Cards">
+            <div class="headline">
+              Choose 2 cards
+            </div>
+            <v-row justify="center">
+              <v-card
+                class="mx-2"
+                @click="chancellorCard(card)"
+                v-for="(card, index) in [player.card, ...player.nextCards]"
+                :key="index"
+              >
+                <v-card-title>
+                  {{ card }}
+                </v-card-title>
+              </v-card>
+            </v-row>
+          </div>
+
           <!-- Cards -->
-          <v-row justify="center">
-            <v-card
-              class="mx-2"
-              @click="selectCard(player.card)"
-            >
-              <v-card-title>
-                {{ player.card }}
-              </v-card-title>
-            </v-card>
-            <v-card
-              class="mx-2"
-              @click="selectCard(card)"
-              v-for="(card, index) in player.nextCards"
-              :key="index"
-            >
-              <v-card-title>
-                {{ card }}
-              </v-card-title>
-            </v-card>
-          </v-row>
+          <div v-else>
+            <v-row justify="center">
+              <v-card
+                class="mx-2"
+                @click="selectCard(card)"
+                v-for="(card, index) in [player.card, ...player.nextCards]"
+                :key="index"
+              >
+                <v-card-title>
+                  {{ card }}
+                </v-card-title>
+              </v-card>
+            </v-row>
+          </div>
+
         </div>
 
         <div class="display-1">
@@ -164,11 +174,25 @@ export default {
   data () {
     return {
       cardId: null,
+      // Chancellor
+      hasToChoose2Cards: false,
+      choosenCards: [],
+      // Attack card
       hasToChooseAnOpponent: false,
       opponent: null,
+      // Guard
       hasToGuess: false,
       guess: null,
+      // cards
       cards: ["Spy", "Guard", "Priest", "Baron", "Handmaid", "Prince", "Chancellor", "King", "Countess", "Princess"]
+    }
+  },
+  sockets: {
+    chancellorStart: function (game) {
+      if (this.isMyTurn) {
+        this.$store.commit('setGame', game)
+        this.hasToChoose2Cards = true
+      }
     }
   },
   methods: {
@@ -176,7 +200,10 @@ export default {
       this.cardId = cardId
 
       if (cardId == 0 || cardId == 4 || cardId == 6 || cardId == 8 || cardId == 9) {
-        this.socketCardSelected(cardId)
+        this.$socket.emit('cardSelected', {
+          gameId: this.game.id,
+          playedCard: cardId
+        })
       }
       else {
         this.hasToChooseAnOpponent = true
@@ -198,10 +225,15 @@ export default {
       this.hasToGuess = false
       this.hasToChooseAnOpponent = false
     },
-    socketCardSelected (cardId) {
-      this.$socket.emit('cardSelected', {
+    chancellorCard (card) {
+      this.choosenCards.push(card)
+      if (this.choosenCards.length == 2) this.chancellor()
+    },
+    chancellor () {
+      this.hasToChoose2Cards = false
+      this.$socket.emit('chancellorEnd', {
         gameId: this.game.id,
-        playedCard: cardId
+        cards: this.choosenCards
       })
     }
   },
