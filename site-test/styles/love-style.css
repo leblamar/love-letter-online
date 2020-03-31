@@ -1,11 +1,13 @@
 html {
-    font-size: 20px;
+    font-size: 40px;
     font-family: 'Lovers Quarrel', cursive;
     background-image: url('../images/love-letter-accueil.jpg');
+    background-size: cover;
+    background-color: #6E0B14;
 }
 
 h1 {
-    font-size: 120px;
+    font-size: 3em;
     text-align: center;
     margin: 0;
     padding: 20px 0;
@@ -14,70 +16,57 @@ h1 {
 }
 
 body {
-    margin: 0 auto;
-    padding: 0 20px 20px 20px;
+    margin: 0 2.5% 2.5% 2.5%;
+    width: 100vw;
+    height: 100vh;
+}
+
+.box {
+    border: 1px solid #F0C300;
+    border-radius: 1em;
+    color: #F0C300;
+    font-family: inherit;
+    display: inline-block;
+}
+
+div {
+    overflow: auto;
+    width: calc(35% - 1em);
+    height: 100%;
+    padding: 1em;
 }
 
 #cards {
-    overflow: auto;
     text-align: center;
-    font-size: 40px;
-    width: 600px;
-    height: 690px;
-    padding: 20px;
-    border: 1px solid white;
-    border-radius: 1em;
-    margin: 0 auto;
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    color: #F0C300;
+    position: left;
 }
 
 #card {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    bottom: 20px;
-}
-
-#cardDesc {
     margin-left: auto;
     margin-right: auto;
 }
 
 #cardDesc {
-    font-size: 40px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 form {
-    width: 320px;
-    height: 220px;
-    padding: 20px;
-    border: 1px solid #CCC;
-    border-radius: 1em;
-    margin: 0 auto;
+    width: 20%;
+    padding: 1em;
+    margin: 0 2.5% auto 2.5%;
 }
 
 input {
-    font: 1em 'Lovers Quarrel';
+    color: #F0C300;
+    text-shadow: 0.75px 0.75px 0.25px black;
+    font-family: inherit;
     font-size: 30px;
 }
 
 #rules {
-    overflow: auto;
     text-align: justify;
-    font-size: 40px;
-    width: 600px;
-    height: 690px;
-    padding: 20px;
-    border: 1px solid white;
-    border-radius: 1em;
-    margin: 0 auto;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    color: #F0C300;
+    position: right;
 }
 
 #username {
