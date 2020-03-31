@@ -80,12 +80,12 @@ io.on('connection', function (socket) {
 
     socket.on('cardSelected', function (data) {
         console.log(data)
-        var { playerId, gameId, playedCard, opponent, guess } = data
+        var { playerId, gameId, playedCard, opponentId, guessedCard } = data
 
         var game = games.find((game) => game.id == gameId)
 
         // Card Alert
-        var message = game.playerPlayMessage(playedCard, opponent)
+        var message = game.playerPlayMessage(playedCard, opponentId)
         // Socket card alert
         socket.emit('cardSelected', message)
         socket.broadcast.to(game.socket).emit('cardSelected', message)
@@ -93,8 +93,8 @@ io.on('connection', function (socket) {
         // Card effect
         var message = game.playTurn({
             playedCard,
-            opponent,
-            guess
+            opponentId,
+            guessedCard
         })
 
         // Socket card effect
