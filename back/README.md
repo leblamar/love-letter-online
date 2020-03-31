@@ -16,6 +16,46 @@ npm start
 
 ## Documentations
 
+### Models
+
+#### Player
+
+```js
+{
+    "id": Number,
+    "username": String,
+
+    "card": Number,
+    "nextCards": [Number],
+
+
+    "hasSpy": Boolean,
+    "hasHandmaid": Boolean,
+    "opponent": Player,
+
+    "isDead": Boolean,
+
+    "points": Number,
+}
+```
+
+#### Game
+
+```js
+{
+    "id": Number,
+    "socket": String,
+
+    "maxPlayer": Number,
+    "hasStarted": Boolean,
+
+    "players": [Player],
+    "deck": Deck <=> [Number],
+    "currentPlayer": Number,
+    "alivePlayers": Number,
+}
+```
+
 ### Sockets
 
 #### On
@@ -23,13 +63,13 @@ npm start
 * Connection : `connection`
 * Créer une nouvelle partie : `createGame`
 
-```
-    (username: String)
+```js
+    "username": String
 ```
 
 * Rejoindre une partie: `joinGame`
 
-```json
+```js
 {
     "gameId": Number,
     "username": String,
@@ -38,13 +78,13 @@ npm start
 
 * Lancement d'une partie : `launchGame`
 
-```
-    (gameId: Number)
+```js
+    "gameId": Number
 ```
 
 * Selection d'une carte : `cardSelected`
 
-```json
+```js
 {
     "gameId": Number,
     "playerId": Number,
@@ -56,7 +96,7 @@ npm start
 
 * Choix définitif du chancellier : `chancellorEnd`
 
-```json
+```js
 {
     "gameId": Number,
     "playerId": Number,
@@ -68,7 +108,7 @@ npm start
 
 * Erreur : `err`
 
-```json
+```js
 {
     "err": String,
 }
@@ -76,10 +116,48 @@ npm start
 
 * Nouvelle partie créée : `createGame`
 
-`(game: Game)`
+```js
+    "game": Game
+```
 
 * Nouveau joueur : `newPlayer`
 
+```js
+    "game": Game
 ```
-    (game: Game)
+
+* Partie lancée : `gameLaunched`
+
+```js
+    "game": Game
+```
+
+* Au tour du joueur suivant : `playerTurn`
+
+```js
+    "game": Game
+```
+
+* Carte jouée par le joueur : `cardSelected`
+
+```js
+    "message": String
+```
+
+* Effet de la carte jouée par le joueur : `cardEffect`
+
+```js
+    "message": String
+```
+
+* Début du choix du chancellier : `chancellorStart`
+
+```js
+    "game": Game
+```
+
+* Fin de la partie : `gameEnd`
+
+```js
+    "game": Game
 ```
