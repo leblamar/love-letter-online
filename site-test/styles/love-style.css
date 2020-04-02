@@ -1,23 +1,24 @@
+/* -------------- */
+/* General things */
+/* -------------- */
+
 html {
-    font-size: 40px;
+    font-size: 30px;
     font-family: 'Lovers Quarrel', cursive;
     background-image: url('../images/love-letter-accueil.jpg');
-    background-size: cover;
+    background-size: 100% auto;
     background-color: #6E0B14;
 }
 
-h1 {
-    font-size: 3em;
-    text-align: center;
+body {
     margin: 0;
-    padding: 20px 0;
-    color: #F0C300;
-    text-shadow: 3px 3px 1px black;
+    padding: 0;
 }
 
-body {
-    margin: 0 2.5% 2.5% 2.5%;
-    width: 100vw;
+body > div {
+    margin: 0;
+    padding: 0;
+    width: 100%;
     height: 100vh;
 }
 
@@ -26,35 +27,34 @@ body {
     border-radius: 1em;
     color: #F0C300;
     font-family: inherit;
-    display: inline-block;
+    margin: 2.5%;
 }
 
-div {
-    overflow: auto;
-    width: calc(35% - 1em);
-    height: 100%;
-    padding: 1em;
-}
 
-#cards {
+/* ---------- */
+/* First page */
+/* ---------- */
+
+h1 {
+    font-size: 5em;
     text-align: center;
-    position: left;
+    margin: 0;
+    padding: 20px 0;
+    color: #F0C300;
+    text-shadow: 3px 3px 1px black;
 }
 
-#card {
-    margin-left: auto;
-    margin-right: auto;
+.bodyPage1 {
+    display: flex;
+    justify-content: center;
 }
 
-#cardDesc {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-form {
+.form {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
     width: 20%;
-    padding: 1em;
-    margin: 0 2.5% auto 2.5%;
+    height: 30%;
 }
 
 input {
@@ -62,25 +62,80 @@ input {
     text-shadow: 0.75px 0.75px 0.25px black;
     font-family: inherit;
     font-size: 30px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-#rules {
-    text-align: justify;
-    position: right;
+.input {
+    margin: 5% 0;
+    padding: 0;
 }
 
 #username {
-    width: 305px;
+    width: 100%;
 }
 
 #create {
-    width: 320px;
+    width: 100%;
 }
 
 #gameID {
-    width: 100px;
+    width: 30%;
 }
 
 #join {
-    width: 200px;
+    width: 70%;
+}
+
+
+/* ----------- */
+/* Second page */
+/* ----------- */
+
+.page2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.left, .right {
+    overflow: auto;
+    padding: 1em;
+    font-size: 40px;
+    flex: 1;
+    height: 83%;
+}
+
+.left {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    margin-right: 7.5%;
+}
+
+.right {
+    text-align: justify;
+    margin-left: 7.5%;
+}
+
+.right > ul {
+    list-style-type: none;
+    list-style-image: url('../images/logo4.png');
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+}
+
+.right ol {
+    list-style-image: none;
+    list-style-position: outside;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+ul > li {
+    font-size: 1.5em;
 }
