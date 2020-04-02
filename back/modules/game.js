@@ -10,7 +10,6 @@ class Game {
         this.maxPlayer = 8
         this.hasStarted = false
         this.players = [new Player(username)]
-        this.deadPlayers = []
         this.socket = 'room-' + this.id
     }
     // Lobby
