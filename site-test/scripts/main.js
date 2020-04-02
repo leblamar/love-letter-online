@@ -1,4 +1,5 @@
-let requestURL = "file:///home/leblamar/Projets_perso/love-letter-online/site-test/scripts/cards.json"
+let baseURL = "http://localhost:8080/"
+let requestURL = baseURL + "scripts/cards.json"
 let request = new XMLHttpRequest()
 request.open("GET", requestURL)
 request.responseType = "json"
@@ -19,30 +20,26 @@ previousScan.addEventListener("click", previousOne)
 nextScan.addEventListener("click", nextOne)
 
 function previousOne() {
-    if (cardNumber > 0) {
-        cardNumber--
-        afficherCarte()
-    }
+    cardNumber = (cardNumber + 9) % 10
+    afficherCarte()
 }
 
 function nextOne() {
-    if (cardNumber < 9) {
-        cardNumber++
-        afficherCarte()
-    }
+    cardNumber = (cardNumber + 1) % 10
+    afficherCarte()
 }
 
 function afficherCarte() {
     let currentCard = cards[cardNumber]
 
     let image = document.getElementById("card")
-    image.src = currentCard["src"]
+    image.src = baseURL + "images/cards/" + currentCard["src"]
     image.alt = "Carte " + currentCard["altTitle"]
     image.title = "La carte " + currentCard["altTitle"]
 
     let shortDesc = document.getElementById("shortDesc")
-    shortDesc.textContent = "<strong>" + currentCard["name"] + "</strong> : Valeur " + currentCard["value"] + ", " + currentCard["numberOfCopies"] + " Exemplaire."
+    shortDesc.innerHTML = "<strong>" + currentCard["name"] + "</strong> : Valeur " + currentCard["value"] + ", " + currentCard["numberOfCopies"] + " Exemplaire."
 
     let cardDesc = document.getElementById("cardDesc")
-    cardDesc.textContent = currentCard["cardDesc"]
+    cardDesc.innerHTML = currentCard["cardDesc"]
 }
