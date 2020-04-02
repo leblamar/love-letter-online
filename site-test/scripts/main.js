@@ -1,33 +1,48 @@
-let myImage = document.querySelector('img')
+let requestURL = "file:///home/leblamar/Projets_perso/love-letter-online/site-test/scripts/cards.json"
+let request = new XMLHttpRequest()
+request.open("GET", requestURL)
+request.responseType = "json"
+request.send()
 
-myImage.addEventListener('click', function() {
-    let mySrc = myImage.getAttribute('src')
-    if (mySrc === 'images/love-letter.jpeg') {
-        myImage.setAttribute('src', 'images/real-love-letter.jpg')
-    } else {
-        myImage.setAttribute('src', 'images/love-letter.jpeg')
+let cardNumber = 0;
+let cards;
+
+request.onload = function() {
+    cards = request.response
+    afficherCarte()
+}
+
+let previousScan = document.getElementById("previous")
+let nextScan = document.getElementById("next")
+
+previousScan.addEventListener("click", previousOne)
+nextScan.addEventListener("click", nextOne)
+
+function previousOne() {
+    if (cardNumber > 0) {
+        cardNumber--
+        afficherCarte()
     }
-})
-
-let myButton = document.querySelector('button')
-let myHeading = document.querySelector('h1')
-
-function setUserName() {
-    let myName = prompt('Veuillez saisir votre nom.')
-    localStorage.setItem('nom', myName)
-    myHeading.textContent = 'Love letter est vraiment le meilleur jeu, ' + myName
 }
 
-if (!localStorage.getItem('nom')) {
-    setUserName()
-} else {
-    let storedName = localStorage.getItem('nom')
-    myHeading.textContent = 'Love letter est vraiment le meilleur jeu, ' + storedName
+function nextOne() {
+    if (cardNumber < 9) {
+        cardNumber++
+        afficherCarte()
+    }
 }
 
-myButton.addEventListener('click', function() {
-    setUserName()
-})
+function afficherCarte() {
+    let currentCard = cards[cardNumber]
 
-// Le vrai challenge commence ici :
-let myImage = document.querySelector('card')
+    let image = document.getElementById("card")
+    image.src = currentCard["src"]
+    image.alt = "Carte " + currentCard["altTitle"]
+    image.title = "La carte " + currentCard["altTitle"]
+
+    let shortDesc = document.getElementById("shortDesc")
+    shortDesc.textContent = "<strong>" + currentCard["name"] + "</strong> : Valeur " + currentCard["value"] + ", " + currentCard["numberOfCopies"] + " Exemplaire."
+
+    let cardDesc = document.getElementById("cardDesc")
+    cardDesc.textContent = currentCard["cardDesc"]
+}
