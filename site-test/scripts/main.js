@@ -1,33 +1,45 @@
-let myImage = document.querySelector('img')
+let baseURL = "http://localhost:8080/"
+let requestURL = baseURL + "scripts/cards.json"
+let request = new XMLHttpRequest()
+request.open("GET", requestURL)
+request.responseType = "json"
+request.send()
 
-myImage.addEventListener('click', function() {
-    let mySrc = myImage.getAttribute('src')
-    if (mySrc === 'images/love-letter.jpeg') {
-        myImage.setAttribute('src', 'images/real-love-letter.jpg')
-    } else {
-        myImage.setAttribute('src', 'images/love-letter.jpeg')
-    }
-})
+let cardNumber = 0;
+let cards;
 
-let myButton = document.querySelector('button')
-let myHeading = document.querySelector('h1')
-
-function setUserName() {
-    let myName = prompt('Veuillez saisir votre nom.')
-    localStorage.setItem('nom', myName)
-    myHeading.textContent = 'Love letter est vraiment le meilleur jeu, ' + myName
+request.onload = function() {
+    cards = request.response
+    afficherCarte()
 }
 
-if (!localStorage.getItem('nom')) {
-    setUserName()
-} else {
-    let storedName = localStorage.getItem('nom')
-    myHeading.textContent = 'Love letter est vraiment le meilleur jeu, ' + storedName
+let previousScan = document.getElementById("previous")
+let nextScan = document.getElementById("next")
+
+previousScan.addEventListener("click", previousOne)
+nextScan.addEventListener("click", nextOne)
+
+function previousOne() {
+    cardNumber = (cardNumber + 9) % 10
+    afficherCarte()
 }
 
-myButton.addEventListener('click', function() {
-    setUserName()
-})
+function nextOne() {
+    cardNumber = (cardNumber + 1) % 10
+    afficherCarte()
+}
 
-// Le vrai challenge commence ici :
-let myImage = document.querySelector('card')
+function afficherCarte() {
+    let currentCard = cards[cardNumber]
+
+    let image = document.getElementById("card")
+    image.src = baseURL + "images/cards/" + currentCard["src"]
+    image.alt = "Carte " + currentCard["altTitle"]
+    image.title = "La carte " + currentCard["altTitle"]
+
+    let shortDesc = document.getElementById("shortDesc")
+    shortDesc.innerHTML = "<strong>" + currentCard["name"] + "</strong> : Valeur " + currentCard["value"] + ", " + currentCard["numberOfCopies"] + " Exemplaire."
+
+    let cardDesc = document.getElementById("cardDesc")
+    cardDesc.innerHTML = currentCard["cardDesc"]
+}

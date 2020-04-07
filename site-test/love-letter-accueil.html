@@ -7,66 +7,77 @@
         <link href="https://fonts.googleapis.com/css?family=Lovers+Quarrel&display=swap" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <header>
-            <h1>Love Letter Online</h1>
-        </header>
+        <div class="page1">
+            <header>
+                <h1>Love Letter Online</h1>
+            </header>
 
-        <div class="box" id="cards">
-            <figure>
-                <!--<img src="images/cardBack.png"-->
-                    <!--alt="Le dos d’image des cartes"-->
-                    <!--title="Le dos de carte"-->
-                <img id="card"
-                    src="images/cards/king.png"
-                    alt="Carte du roi"
-                    width="220"
-                    height="320"
-                    title="La carte du roi">
-                <!--<figcaption id="cardDesc">Dos de carte.</figcaption>-->
-                <figcaption id="cardDesc">Roi : Valeur 7, 1 Exemplaire.</figcaption>
-            </figure>
-            <p>Le Roi est une carte ayant une haute valeur, il est donc important de la conserver en fin de partie. Le Roi est à touble tranchant, il permet à la fois de connaître la carte adversaire mais donne l'information à l'adversaire de la carte que vous possédez. Si il pioche un garde vous êtes faits.</p>
+            <div class="bodyPage1">
+                <div class="form box" id="form">
+                    <p class="input">
+                        <input type="text" id="username" placeholder="Username" />
+                    </p>
+                    <p class="input">
+                        <input type="button" id="create" value="Créer une partie" />
+                    </p>
+                    <p class="input" id="joinAGame">
+                        <input type="text" id="gameID" placeholder="Game ID" /><input type="button" id="join" value="Rejoindre une partie" />
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <form class="box">
-            <p>
-                <input type="text" id="username" placeholder="Username" />
-            </p>
-            <p>
-                <input type="button" id="create" value="Créer une partie" />
-            </p>
-            <p>
-                <input type="text" id="gameID" placeholder="Game ID" />
-                <input type="button" id="join" value="Rejoindre une partie" />
-            </p>
-        </form>
+        <div class="page2">
 
-        <div class="box" id="rules">
-            <h2>Règle de jeu</h2>
-            <h3>But du jeu</h3>
-            <p> Une partie se joue en plusieurs manches. La manche est remportée par le dernier joueur en jeu, ou par le joueur qui a la carte de plus haute valeur à la fin de la pioche. Le joueur avec le plus de point de Faveur à la fin des manches remporte la partie.
-            <h3>Mise en place</h3>
-            <p>Chaque joueur commence avec une carte en main. Une carte est brûlée (retirée de la pioche pour qu'on ne puisse pas compter les cartes restantes), et le reste des cartes constitue la pioche.</p>
-            <h3>Déroulement</h3>
-            <p>
-            Tour à tour, les joueurs piochent une carte, en jouent une en la posant devant eux et activent son effet. Voici leurs effets et leur valeur :
-            <ol start=0 >
-                <li>Espionne : quand un joueur joue l’Espionne, s’il est le seul encore en lice ayant joué une Espionne, il gagne alors un point de Faveur. 2 Exemplaires</li>
-                <li>Garde : le joueur désigne un adversaire et nomme une carte (sauf Garde). Si c’est la carte que l’adversaire a en main, alors l’adversaire est éliminé de la manche. 6 Exemplaires</li>
-                <li>Prêtre : le joueur regarde la carte qu’un adversaire de son choix a en main. 2 Exemplaires</li>
-                <li>Baron : le joueur choisit un adversaire. Les deux se montrent leur carte : celui dont la valeur de la carte est la plus faible est éliminé de la manche. Si leurs valeurs sont égales, alors personne n’est éliminé. 2 Exemplaires</li>
-                <li>Servante : quand un joueur joue la Servante, il ne peut pas subir l’effet d’autres cartes pendant un tour, jusqu’à ce qu’il joue de nouveau. 2 Exemplaires</li>
-                <li>Prince : le joueur choisit un joueur (lui compris) qui défausse sa carte et en pioche une autre immédiatement. 2 Exemplaires</li>
-                <li>Chancelier : le joueur pioche 2 cartes. Il conserve 1 carte et place les 2 autres dans l’ordre de son choix sous le paquet. 2 Exemplaires</li>
-                <li>Roi : le joueur échange sa carte avec celle d’un autre joueur de son choix. 1 Exemplaire</li>
-                <li>Comtesse : elle n’a pas de pouvoir en soi, mais doit obligatoirement être jouée si le joueur qui la possède a aussi en main un Prince ou un Roi. 1 Exemplaire</li>
-                <li>Princesse : elle n’a pas de pouvoir en soi, mais si elle doit être défaussée alors le joueur qui l’avait est éliminé de la manche. 1 Exemplaire</li>
-            </ol>
-            </p>
-            <h3>Fin de manche</h3>
-            <p>La manche se termine soit quand il n’y a plus qu’un joueur, soit lorsqu’il n’y a plus de carte dans la pioche. Les joueurs comparent alors la valeur de la carte qu’ils ont en main et la plus haute valeur l’emporte. S’il y a un ex-æquo, on regarde l’ensemble des cartes ayant été jouées pendant la manche : le joueur dont la somme est la plus importante l’emporte. Le joueur remportant la manche gagne un point de Faveur.</p>
-            <h3>Fin de partie et vainqueur</h3>
-            <p>La fin d’une partie est fixée par un nombre de manche. Le joueur possédant le plus de point de Faveur à la fin de la partie gagne.</p>
+            <div class="left box" id="cards">
+                <figure>
+                    <img id="card"
+                        src="images/cards/king.png"
+                        alt="Carte du Roi"
+                        width="220"
+                        height="320"
+                        title="La carte du Roi">
+                    <figcaption>
+                        <scan id="previous">&#8678</scan>
+                        <scan id="shortDesc"><strong>Roi </strong> : Valeur 7, 1 Exemplaire.</scan>
+                        <scan id="next">&#8680</scan></figcaption>
+                </figure>
+
+                <p id="cardDesc">Le <strong>Roi </strong> est une carte ayant une haute valeur, il est donc important de la conserver en fin de partie. Le <strong>Roi </strong> est à touble tranchant, il permet à la fois de connaître la carte adversaire mais donne l'information à l'adversaire de la carte que vous possédez. Si il pioche un garde vous êtes faits.</p>
+            </div>
+
+            <div class="right box" id="rules">
+                <h2>Règle de jeu</h2>
+                <ul>
+                    <li>But du jeu</li>
+                    <p> Une partie se joue en plusieurs manches. La manche est remportée par le dernier joueur en jeu, ou par le joueur qui a la carte de plus haute valeur à la fin de la pioche. Le joueur avec le plus de point de Faveur à la fin des manches remporte la partie.
+                    <li>Mise en place</li>
+                    <p>Chaque joueur commence avec une carte en main. Une carte est brûlée (retirée de la pioche pour qu'on ne puisse pas compter les cartes restantes), et le reste des cartes constitue la pioche.</p>
+                    <li>Déroulement</li>
+                    <p>
+                    Tour à tour, les joueurs piochent une carte, en jouent une en la posant devant eux et activent son effet. Voici leurs effets et leur valeur :
+                    <ol start=0 >
+                        <li><strong>Espionne </strong>: quand un joueur joue l’<strong>Espionne </strong>, s’il est le seul encore en lice ayant joué une <strong>Espionne </strong>, il gagne alors un point de Faveur. 2 Exemplaires</li>
+                        <li><strong>Garde </strong>: le joueur désigne un adversaire et nomme une carte (sauf <strong>Garde </strong>). Si c’est la carte que l’adversaire a en main, alors l’adversaire est éliminé de la manche. 6 Exemplaires</li>
+                        <li><strong>Prêtre </strong>: le joueur regarde la carte qu’un adversaire de son choix a en main. 2 Exemplaires</li>
+                        <li><strong>Baron </strong>: le joueur choisit un adversaire. Les deux se montrent leur carte : celui dont la valeur de la carte est la plus faible est éliminé de la manche. Si leurs valeurs sont égales, alors personne n’est éliminé. 2 Exemplaires</li>
+                        <li><strong>Servante </strong>: quand un joueur joue la <strong>Servante </strong>, il ne peut pas subir l’effet d’autres cartes pendant un tour, jusqu’à ce qu’il joue de nouveau. 2 Exemplaires</li>
+                        <li><strong>Prince </strong>: le joueur choisit un joueur (lui compris) qui défausse sa carte et en pioche une autre immédiatement. 2 Exemplaires</li>
+                        <li><strong>Chancelier </strong>: le joueur pioche 2 cartes. Il conserve 1 carte et place les 2 autres dans l’ordre de son choix sous le paquet. 2 Exemplaires</li>
+                        <li><strong>Roi </strong>: le joueur échange sa carte avec celle d’un autre joueur de son choix. 1 Exemplaire</li>
+                        <li><strong>Comtesse </strong>: elle n’a pas de pouvoir en soi, mais doit obligatoirement être jouée si le joueur qui la possède a aussi en main un <strong>Prince </strong> ou un <strong>Roi </strong>. 1 Exemplaire</li>
+                        <li><strong>Princesse </strong>: elle n’a pas de pouvoir en soi, mais si elle doit être défaussée alors le joueur qui l’avait est éliminé de la manche. 1 Exemplaire</li>
+                    </ol>
+                    </p>
+                    <li>Fin de manche</li>
+                    <p>La manche se termine soit quand il n’y a plus qu’un joueur, soit lorsqu’il n’y a plus de carte dans la pioche. Les joueurs comparent alors la valeur de la carte qu’ils ont en main et la plus haute valeur l’emporte. S’il y a un ex-æquo, on regarde l’ensemble des cartes ayant été jouées pendant la manche : le joueur dont la somme est la plus importante l’emporte. Le joueur remportant la manche gagne un point de Faveur.</p>
+                    <li>Fin de partie et vainqueur</li>
+                    <p>La fin d’une partie est fixée par un nombre de manche. Le joueur possédant le plus de point de Faveur à la fin de la partie gagne.</p>
+                </ul>
+            </div>
+
         </div>
+
+        <script src="scripts/main.js"></script>
     </body>
 </html>

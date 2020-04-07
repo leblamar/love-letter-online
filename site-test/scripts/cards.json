@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Espionne",
+        "value": 0,
+        "numberOfCopies": 2,
+        "src": "spy.png",
+        "altTitle": "de l’Espionne",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Garde",
+        "value": 1,
+        "numberOfCopies": 6,
+        "src": "guard.png",
+        "altTitle": "du Garde",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Prêtre",
+        "value": 2,
+        "numberOfCopies": 2,
+        "src": "priest.png",
+        "altTitle": "du Prêtre",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Baron",
+        "value": 3,
+        "numberOfCopies": 2,
+        "src": "baron.png",
+        "altTitle": "du Baron",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Servante",
+        "value": 4,
+        "numberOfCopies": 2,
+        "src": "handmaid.png",
+        "altTitle": "de la Servante",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Prince",
+        "value": 5,
+        "numberOfCopies": 2,
+        "src": "prince.png",
+        "altTitle": "du Prince",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Chancelier",
+        "value": 6,
+        "numberOfCopies": 2,
+        "src": "chancellor.png",
+        "altTitle": "du Chancelier",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Roi",
+        "value": 7,
+        "numberOfCopies": 1,
+        "src": "king.png",
+        "altTitle": "du Roi",
+        "cardDesc": "Le <strong>Roi</strong> est une carte ayant une haute valeur, il est donc important de la conserver en fin de partie. Le <strong>Roi</strong> est à double tranchant, il peremt à la fois de connaître la carte adversaire mais donner l’information à l’adversaire de la carte que vous possédez. Si il pioche un garde vous êtes faits."
+    },
+    {
+        "name": "Comtesse",
+        "value": 8,
+        "numberOfCopies": 1,
+        "src": "comtesse.png",
+        "altTitle": "de la Comtesse",
+        "cardDesc": "Not yet implemented."
+    },
+    {
+        "name": "Princesse",
+        "value": 9,
+        "numberOfCopies": 1,
+        "src": "princess.png",
+        "altTitle": "de la Princesse",
+        "cardDesc": "Not yet implemented."
+    }
+]
