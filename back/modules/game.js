@@ -89,8 +89,8 @@ class Game {
         var message = "Not yet implemented"
 
         // Opponent
-        var { opponent, guess } = play
-        var opponentPlayer = this.players.find((player) => player.id == opponent)
+        var { opponentId, guessedCard } = play
+        var opponentPlayer = this.players.find((player) => player.id == opponentId)
 
         switch (playedCard) {
             // Spy
@@ -101,7 +101,7 @@ class Game {
 
             // Guard
             case 1:
-                if (opponentPlayer.card == guess) {
+                if (opponentPlayer.card == guessedCard) {
                     this.killPlayer(opponentPlayer)
                     message = player.username + " killed " + opponentPlayer.username + " with a guard"
                 }

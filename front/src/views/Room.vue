@@ -28,38 +28,9 @@ export default {
   },
   computed: {
     ...mapState({
-      game: 'game'
+      game: 'game',
+      hasFinished: 'gameIsFinished'
     }),
-  },
-  data () {
-    return {
-      hasFinished: false
-    }
-  },
-  sockets: {
-    newPlayer: function (game) {
-      this.$store.commit('setGame', game)
-    },
-    gameLaunched: function (game) {
-      this.$store.commit('resetMessages')
-      this.$store.commit('setGame', game)
-      this.hasFinished = false
-    },
-    playerTurn: function (game) {
-      this.$store.commit('setGame', game)
-      this.$store.commit('playerTurn')
-    },
-    cardSelected: function (message) {
-      this.$store.commit('addMessage', message)
-    },
-    cardEffect: function (message) {
-      this.$store.commit('addMessage', message)
-    },
-    gameEnd: function (game) {
-      this.$store.commit('setGame', game)
-      this.hasFinished = true
-    },
-
   },
 }
 </script>
