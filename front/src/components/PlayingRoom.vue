@@ -216,8 +216,8 @@ export default {
       this.$socket.emit('cardSelected', {
         gameId: this.game.id,
         playedCard: this.cardId,
-        opponent: this.opponent,
-        guess: this.cards.indexOf(this.guess)
+        opponentId: this.opponent,
+        guessedCard: this.cards.indexOf(this.guess)
       })
 
       this.guess = null

@@ -14,6 +14,9 @@ const Game = require('./modules/game')
 
 var games = []
 
+socketName = function (str) {
+    return "" + str
+}
 
 io.on('connection', function (socket) {
     console.log("New connection")

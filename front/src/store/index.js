@@ -13,8 +13,10 @@ export default new Vuex.Store({
     player: null,
     // Games
     game: null,
+    gameIsFinished: false,
     messages: [],
-    games: [],
+    // Components
+
   },
   getters: {
     isHost: (state) => {
@@ -23,6 +25,7 @@ export default new Vuex.Store({
     isGameReady: (state) => {
       return state.game.players.length > 1
     },
+
     isMyTurn: (state) => {
       return state.game.players[state.game.currentPlayer].id == state.player.id
     },
@@ -31,29 +34,32 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    SOCKET_connect (state) {
+    // Socket
+    // Connection
+    socketconnect (state) {
       console.log("Connected to websocket")
       state.connected = true
     },
-    SOCKET_disconnect (state) {
+    socketdisconnect (state) {
+      console.log("Disconnected to websocket")
       state.connected = false
     },
-    SOCKET_ping () {
-      console.log('ping')
-    },
+
     // User
     setName (state, username) {
       state.username = username
-      // console.log(username)
     },
     setPlayer (state, player) {
       state.player = player
     },
+
     // Game
     setGame (state, game) {
       state.game = game
       state.player = game.players.find((player) => player.id == state.player.id)
-      // console.log(game)
+    },
+    setIsFinishedGame (state, bool) {
+      state.gameIsFinished = bool
     },
     resetMessages (state) {
       state.messages = []
@@ -64,17 +70,41 @@ export default new Vuex.Store({
     playerTurn (state) {
       state.messages.push("C'est au tour de " + state.game.players[state.game.currentPlayer].username)
     }
-    // Socket
-    // SOCKET_NEW_GAME (state, game) {
-    //   state.game = game
-    //   // this.$router.push({ name: 'game', params: { id: state.game.id } })
-    // },
-    // SOCKET_PLAYER_JOIN (state, game) {
-    //   state.game = game
-    // }
   },
   actions: {
+    // Home
+    joinGame ({ commit }, game) {
+      commit("resetMessage")
+      commit('setPlayer', game.players[game.players.length - 1])
+      commit('setGame', game)
+    },
+    socket_newPlayer ({ commit }, game) {
+      commit('setGame', game)
+    },
 
+    // Room
+    // Socket game
+    socket_gameLaunched ({ commit }, game) {
+      commit('resetMessages')
+      commit('setGame', game)
+      commit('setIsFinishedGame', false)
+    },
+    socket_gameEnd ({ commit }, game) {
+      commit('setGame', game)
+      commit('setIsFinishedGame', true)
+    },
+
+    // Socket player
+    socket_playerTurn ({ commit }, game) {
+      commit('setGame', game)
+      commit('playerTurn')
+    },
+    socket_cardSelected ({ commit }, message) {
+      commit('addMessage', message)
+    },
+    socket_cardEffect ({ commit }, message) {
+      commit('addMessage', message)
+    },
   },
   modules: {
   }
