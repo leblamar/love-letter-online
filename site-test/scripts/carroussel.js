@@ -1,3 +1,4 @@
+// Carroussel
 let baseURL = "http://localhost:8080/"
 let requestURL = baseURL + "scripts/cards.json"
 let request = new XMLHttpRequest()

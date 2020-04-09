@@ -1,136 +1,121 @@
 <template>
-  <div class="home">
-    <!-- <img
-      alt="Vue logo"
-      src="../assets/logo.png"
-    > -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <div>
-      <h1 class="text-center">Love letter online</h1>
-    </div>
-    <v-row justify="center">
-      <v-col
-        cols="12"
-        sm="6"
-        md="8"
-        align="center"
-      >
-        <div>
-          <form>
-            <v-card>
-              <v-col
-                cols="12"
-                sm="10"
-              >
-                <v-text-field
-                  v-model="username"
-                  label="Solo"
-                  placeholder="Username"
-                  :counter="16"
-                  solo
-                  required
-                  @input="$v.name.$touch()"
-                  @blur="$v.name.$touch()"
-                >
-                </v-text-field>
-                <v-btn
-                  color="primary"
-                  block
-                  @click="createGame()"
-                >
-                  Créer une partie
-                </v-btn>
-                <br>
-                <v-row>
-                  <v-col
-                    cols="6"
-                    sm="4"
-                  >
-                    <v-text-field
-                      v-model="gameId"
-                      placeholder="Game Id"
-                      solo
-                    >
-                    </v-text-field>
-
-                  </v-col>
-                  <v-col
-                    cols="6"
-                    sm="8"
-                  >
-                    <v-btn
-                      color="secondary"
-                      block
-                      @click="joinGame"
-                    >
-                      Rejoindre cette partie
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-card>
-          </form>
+    <div id="home">
+        <div id="page1" class="page">
+            <v-row justify="center" align="start">
+                <Connect></Connect>
+            </v-row>
+            <v-btn
+                class="button gameDown white--text"
+                :color="color"
+                href="#page2"
+                x-large
+            >
+                Règles du jeu
+            </v-btn>
         </div>
-      </v-col>
-    </v-row>
-  </div>
+        <div id="page2" class="page">
+            <v-btn
+                class="button rulesUp white--text"
+                :color="color"
+                href="#page1"
+                x-large
+            >
+                Jouer au jeu
+            </v-btn>
+            <Rules></Rules>
+            <v-btn
+                class="button rulesDown white--text"
+                :color="color"
+                href="#page3"
+                x-large
+            >
+                Les différentes cartes
+            </v-btn>
+        </div>
+        <div id="page3" class="page">
+            <v-btn
+                class="button cardsUp white--text"
+                :color="color"
+                href="#page2"
+                x-large
+            >
+                Règles du jeu
+            </v-btn>
+            <Cards></Cards>
+            <v-btn
+                class="button cardsDown white--text"
+                :color="color"
+                href="#page1"
+                x-large
+            >
+                Jouer au jeu
+            </v-btn>
+        </div>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-import { validationMixin } from 'vuelidate'
-import { required, maxLength } from 'vuelidate/lib/validators'
+    import Cards from '@/components/Cards.vue'
+    import Connect from '@/components/Connect.vue'
+    import Rules from '@/components/Rules.vue'
 
-// import io from "socket.io"
-
-
-// import { mapState } from 'vuex'
-
-export default {
-  name: 'Home',
-  components: {
-    // HelloWorld
-  },
-  mixins: [validationMixin],
-  validations: {
-    username: { required, maxLength: maxLength(16) },
-  },
-
-  data () {
-    return {
-      username: null,
-      gameId: null,
+    export default {
+        name: 'Home',
+        components: {
+            Cards,
+            Connect,
+            Rules
+        },
+        data () {
+            return {
+                color: 'rgba(0, 0, 0, 0.3)'
+            }
+        }
     }
-  },
-  sockets: {
-    newGame: function (game) {
-      this.$store.commit("resetMessage")
-      this.$store.commit('setPlayer', game.players[game.players.length - 1])
-      this.$store.commit('setGame', game)
-      this.$router.push({ name: 'game', params: { id: game.id } })
-    },
-    newPlayer: function (game) {
-      this.$store.commit("resetMessage")
-      this.$store.commit('setPlayer', game.players[game.players.length - 1])
-      this.$store.commit('setGame', game)
-      this.$router.push({ name: 'game', params: { id: game.id } })
-    },
-
-    err: function (err) {
-      console.log(err)
-    }
-  },
-  methods: {
-    createGame: function () {
-      this.$socket.emit('createGame', this.username)
-    },
-    joinGame: function () {
-      this.$socket.emit('joinGame', {
-        username: this.username,
-        gameId: this.gameId
-      })
-    }
-  }
-}
 </script>
+
+<style>
+    #home {
+        font-size: 30px;
+        font-family: 'Lovers Quarrel', cursive;
+        color: #F0C300;
+        background-image: url('/images/love-letter-accueil.jpg');
+        background-size: 100% auto;
+        background-color: #6E0B14;
+        background-repeat: repeat;
+    }
+
+    .page {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+    .button {
+        position: absolute;
+        width: 100%;
+        font-family: sans-serif;
+    }
+
+    .gameDown {
+        bottom: 200vh;
+    }
+
+    .rulesUp {
+        top: 100vh;
+    }
+
+    .rulesDown {
+        bottom: 100vh;
+    }
+
+    .cardsUp {
+        top: 200vh;
+    }
+
+    .cardsDown {
+        bottom: 0vh;
+    }
+
+</style>
