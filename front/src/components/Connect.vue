@@ -5,6 +5,7 @@
             <form>
                 <v-row>
                     <v-text-field
+                        v-model="username"
                         label="Username"
                         class="input username"
                         solo
@@ -15,6 +16,7 @@
                         block
                         class="input create"
                         large
+                        @click="createGame"
                     >
                         Créer une partie
                     </v-btn>
@@ -27,6 +29,7 @@
                         sm="4"
                     >
                         <v-text-field
+                            v-model="gameId"
                             label="GameID"
                             class="input gameid"
                             solo
@@ -40,6 +43,7 @@
                             block
                             class="input join"
                             large
+                            @click="joinGame"
                         >
                             Rejoindre une partie
                         </v-btn>
@@ -51,6 +55,26 @@
 </template>
 
 <script>
+    export default {
+        name: 'Connect',
+        data () {
+            return {
+                username: "",
+                gameId: ""
+            }
+        },
+        methods: {
+            createGame: function() {
+                this.$socket.emit('createGame', this.username)
+            },
+            joinGame: function() {
+                this.$socket.emit('joinGame', {
+                    username: this.username,
+                    gameId: this.gameId
+                })
+            }
+        }
+    }
 </script>
 
 <style>

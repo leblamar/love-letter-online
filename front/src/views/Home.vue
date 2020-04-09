@@ -1,23 +1,23 @@
 <template>
     <div id="home">
-        <div id="page1" class="page">
+        <div id="jouer-au-jeu" class="page">
             <v-row justify="center" align="start">
                 <Connect></Connect>
             </v-row>
             <v-btn
                 class="button gameDown white--text"
                 :color="color"
-                href="#page2"
+                href="#regle-du-jeu"
                 x-large
             >
                 Règles du jeu
             </v-btn>
         </div>
-        <div id="page2" class="page">
+        <div id="regle-du-jeu" class="page">
             <v-btn
                 class="button rulesUp white--text"
                 :color="color"
-                href="#page1"
+                href="#jouer-au-jeu"
                 x-large
             >
                 Jouer au jeu
@@ -26,17 +26,17 @@
             <v-btn
                 class="button rulesDown white--text"
                 :color="color"
-                href="#page3"
+                href="#cartes-du-jeu"
                 x-large
             >
                 Les différentes cartes
             </v-btn>
         </div>
-        <div id="page3" class="page">
+        <div id="cartes-du-jeu" class="page">
             <v-btn
                 class="button cardsUp white--text"
                 :color="color"
-                href="#page2"
+                href="#regle-du-jeu"
                 x-large
             >
                 Règles du jeu
@@ -45,7 +45,7 @@
             <v-btn
                 class="button cardsDown white--text"
                 :color="color"
-                href="#page1"
+                href="#jouer-au-jeu"
                 x-large
             >
                 Jouer au jeu
