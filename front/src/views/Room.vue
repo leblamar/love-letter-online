@@ -1,13 +1,25 @@
 <template>
-  <div>
-    <div v-if="!game.hasStarted">
+  <div id="room">
+    <div
+      class="room"
+      v-if="!game.hasStarted"
+    >
       <WaitingRoom />
     </div>
-    <div v-else>
-      <div v-if="!hasFinished">
+    <div
+      class="room"
+      v-else
+    >
+      <div
+        class="room"
+        v-if="!hasFinished"
+      >
         <PlayingRoom />
       </div>
-      <div v-else>
+      <div
+        class="room"
+        v-else
+      >
         <FinishRoom />
       </div>
     </div>
@@ -34,3 +46,18 @@ export default {
   },
 }
 </script>
+
+<style>
+  #room {
+    background-image: url('/images/game-room.jpg');
+    background-size: 100%;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .room {
+    padding: 0;
+    margin: 0;
+  }
+
+</style>
