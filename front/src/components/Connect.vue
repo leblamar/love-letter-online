@@ -99,6 +99,7 @@
         padding: 1.25em 1.5em;
         padding-bottom: 0;
         width: 60%;
+        background-color: rgba(0, 0, 0, 0.4);
     }
 
     .space {

@@ -85,6 +85,18 @@
         background-repeat: repeat;
     }
 
+    .box {
+        border: 1px solid #F0C300;
+        border-radius: 1em;
+        height: 80vh;
+        overflow: auto;
+        padding: 1em;
+        font-size: 40px;
+        width: 45vw;
+        background-color: rgba(0, 0, 0, 0.4);
+        position: absolute;
+    }
+
     .page {
         margin: 0;
         padding: 0;

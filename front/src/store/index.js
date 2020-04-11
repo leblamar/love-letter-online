@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import json from '../assets/cards.json'
+
+console.log(json)
 
 Vue.use(Vuex)
 
@@ -16,6 +19,7 @@ export default new Vuex.Store({
     gameIsFinished: false,
     messages: [],
     // Components
+    cards: json
 
   },
   getters: {
