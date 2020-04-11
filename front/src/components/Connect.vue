@@ -63,6 +63,20 @@
                 gameId: ""
             }
         },
+        sockets: {
+            newGame: function (game) {
+                this.$store.commit("resetMessage")
+                this.$store.commit("setPlayer", game.players[game.players.length - 1])
+                this.$store.commit("setGame", game)
+                this.$router.push({ name: 'game', params: { id: game.id }})
+            },
+            newPlayer: function (game) {
+                this.$store.commit("resetMessage")
+                this.$store.commit("setPlayer", game.players[game.players.length - 1])
+                this.$store.commit("setGame", game)
+                this.$router.push({ name: 'game', params: { id: game.id }})
+            }
+        },
         methods: {
             createGame: function() {
                 this.$socket.emit('createGame', this.username)

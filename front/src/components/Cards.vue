@@ -9,12 +9,6 @@
                         height="100%"
                     >
                         <v-carousel-item
-                            v-for="test in testNBR"
-                            :key="test"
-                        >
-                            <h2>Test {{ test }}</h2>
-                        </v-carousel-item>
-                        <v-carousel-item
                             class="carouselItem"
                             v-for="(card,i) in cards"
                             :key="i"
