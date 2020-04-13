@@ -25,26 +25,27 @@
     </div>
   </div>
 </template>
+
 <script>
-import { mapState } from 'vuex'
+  import { mapState } from 'vuex'
 
-import WaitingRoom from "@/components/WaitingRoom"
-import PlayingRoom from "@/components/PlayingRoom"
-import FinishRoom from "@/components/FinishRoom"
+  import WaitingRoom from "@/components/WaitingRoom"
+  import PlayingRoom from "@/components/PlayingRoom"
+  import FinishRoom from "@/components/FinishRoom"
 
-export default {
-  components: {
-    WaitingRoom,
-    PlayingRoom,
-    FinishRoom
-  },
-  computed: {
-    ...mapState({
-      game: 'game',
-      hasFinished: 'gameIsFinished'
-    }),
-  },
-}
+  export default {
+    components: {
+      WaitingRoom,
+      PlayingRoom,
+      FinishRoom
+    },
+    computed: {
+      ...mapState({
+        game: 'game',
+        hasFinished: 'gameIsFinished'
+      }),
+    },
+  }
 </script>
 
 <style>
