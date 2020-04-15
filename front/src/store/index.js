@@ -92,6 +92,7 @@ export default new Vuex.Store({
       commit('setIsFinishedGame', false)
     },
     socket_gameEnd ({ commit }, game) {
+      console.log("La partie est fini")
       commit('setGame', game)
       commit('setIsFinishedGame', true)
     },

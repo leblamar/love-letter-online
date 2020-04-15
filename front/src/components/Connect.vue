@@ -8,6 +8,7 @@
                         v-model="username"
                         label="Username"
                         class="input username"
+                        v-on:keyup.enter="createGame"
                         solo
                     ></v-text-field>
                 </v-row>
@@ -32,6 +33,7 @@
                             v-model="gameId"
                             label="GameID"
                             class="input gameid"
+                            v-on:keyup.enter="joinGame"
                             solo
                         ></v-text-field>
                     </v-col>

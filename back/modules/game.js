@@ -31,6 +31,14 @@ class Game {
         // Donner une carte à chacun
         this.players.forEach((player) => player.setCard(this.deck.nextCard()))
 
+        // Tout le monde en vie et personne espionne
+        this.players.forEach((player) => {
+            player.isDead = false
+            player.hasSpy = false
+            player.opponent = null
+            player.hasHandmaid = false
+        })
+
         // défausser une carte au début
         this.deck.discardCard(this.deck.nextCard())
     }
@@ -46,9 +54,9 @@ class Game {
         player.setNextCard(this.deck.nextCard())
     }
     nextTurn () {
-        this.currentPlayer = (++this.currentPlayer) % this.players.length
-        while (this.currentPlayer.isDead) {
-            this.currentPlayer = (this.currentPlayer++) % this.players.length
+        this.currentPlayer = (this.currentPlayer + 1) % this.players.length
+        while (this.players[this.currentPlayer].isDead) {
+            this.currentPlayer = (this.currentPlayer + 1) % this.players.length
         }
         this.playerTurn()
     }
@@ -114,6 +122,7 @@ class Game {
             case 2:
                 player.hasPlayedPriest({
                     id: opponentPlayer.id,
+                    username: opponentPlayer.username,
                     card: opponentPlayer.card
                 })
                 message = player.username + " made his best pray"
@@ -174,6 +183,9 @@ class Game {
                 this.killPlayer(player)
                 message = "That was a pleasure to meet you"
                 break
+
+            default:
+                message = "Yamete kudasai senpai !!!"
         }
 
         // // Next player

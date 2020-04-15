@@ -18,26 +18,28 @@
                 <v-card-title>{{ player.username }}</v-card-title>
                 <v-card-text>
                     <p class="icones">
-                        <scan
-                            v-if="player.hasHandMaid"
+                        <span
+                            v-if="player.hasHandmaid"
                         >
                             <v-img
                                 class="icone"
                                 :src="iconsBaseURL + 'handmaid.png'"
                                 alt="Servante"
                                 title="Servante"
+                                width="3em"
                             ></v-img>
-                        </scan>
-                        <scan
+                        </span>
+                        <span
                             v-if="player.hasSpy"
                         >
                             <v-img
                                 class="icone"
-                                :src="iconsBaseULR + 'spy.png'"
+                                :src="iconsBaseURL + 'spy.png'"
                                 alt="Espionne"
                                 title="Espionne"
+                                width="3em"
                             ></v-img>
-                        </scan>
+                        </span>
                     </p>
                 </v-card-text>
             </v-card>
@@ -47,19 +49,43 @@
             class="me"
             v-show="!isMyTurn"
         >
-            <h2>{{ me.username }}</h2>
+            <h2 class="monNom">{{ me.username }}</h2>
+            <p class="icones">
+                <span
+                    v-if="me.hasHandmaid"
+                >
+                    <v-img
+                        class="icone"
+                        :src="iconsBaseURL + 'handmaid.png'"
+                        alt="Servante"
+                        title="Servante"
+                        width="3em"
+                    ></v-img>
+                </span>
+                <span
+                    v-if="me.hasSpy"
+                >
+                    <v-img
+                        class="icone"
+                        :src="iconsBaseURL + 'spy.png'"
+                        alt="Espionne"
+                        title="Espionne"
+                        width="3em"
+                    ></v-img>
+                </span>
+            </p>
             <v-card
-                height="30vh"
-                width="11.5vw"
+                width="220px"
+                height="320px"
                 elevation="24"
                 color="rgba(255, 255, 255, 0.7)"
             >
                 <v-img
-                    :src="cardsBaseURL + me.card.src"
-                    :alt="'Carte ' + me.card.altTitle"
+                    :src="cardsBaseURL + cards[me.card].src"
+                    :alt="'Carte ' + cards[me.card].altTitle"
                     width="100%"
                     height="100%"
-                    :title="'La carte ' + me.card.altTitle"
+                    :title="'La carte ' + cards[me.card].altTitle"
                 ></v-img>
             </v-card>
         </div>
@@ -69,12 +95,19 @@
             opacity=0.6
         >
             <h2
-                v-show="hasToPlayACard"
+                v-show="hasToPlayACard && !hasToDiscard"
                 class="action"
             >
                 Sélectionner une carte à jouer :
             </h2>
-            
+
+            <h3
+                v-show="errorContess"
+                class="action erreur"
+            >
+                Vous ne pouvez jouer que la comtesse !!!
+            </h3>
+
             <v-row
                 justify="center"
                 v-if="!hasToPlayACard"
@@ -133,7 +166,7 @@
             </h2>
             <v-select
                 v-show="hasToChooseAnOpponent"
-                :items="game.players.filter(player => choosableOpponent(player))"
+                :items="choosableOpponents(card)"
                 item-text="username"
                 item-value="id"
                 label="Choisir un adversaire"
@@ -203,6 +236,27 @@
                 </v-col>
             </v-row>
         </v-overlay>
+
+        <v-overlay
+            v-if="priestCard"
+        >
+            <h2
+                class="action"
+            >
+               Voici la carte de {{ me.opponent.username }} :
+            </h2>
+            <v-img
+                :src="cardsBaseURL + cards[me.opponent.card].src"
+                :alt="'Carte ' + cards[me.opponent.card].altTitle"
+                :title="'La carte ' + cards[me.opponent.card].altTitle"
+                width="220px"
+                height="320px"
+            ></v-img>
+
+            <v-btn @click="priestCard = false">
+                Fermer
+            </v-btn>
+        </v-overlay>
     </div>
 </template>
 
@@ -221,10 +275,12 @@
                 hasToGuess: false,
                 hasToChooseACard: false,
                 hasToPutACardToTheEnd: false,
+                errorContess: false,
                 chancellorCards: null,
                 opponent: null,
                 guess: null,
-                card: null
+                card: null,
+                priestCard: false
             }
         },
         sockets: {
@@ -269,20 +325,37 @@
             isPlayerTurn: function(index) {
                 return index == this.game.currentPlayer
             },
+            choosableCards: function() {
+                return [this.me.card, ...this.me.nextCards]
+            },
+            hasOpponent: function(card) {
+                return this.choosableOpponents(card).length != 0
+            },
             selectedCard: function(card) {
+                if ((card == 5 || card == 7) && this.choosableCards().includes(8)) {
+                    this.errorContess = true
+                    return
+                }
+                this.errorContess = false
                 this.hasToPlayACard = false
                 this.card = card
 
                 if (card == 0 || card == 4 || card == 8 || card == 9) {
+                    this.hasToPlayACard = true
                     this.$socket.emit('cardSelected', {
                         gameId: this.game.id,
                         playedCard: card
                     })
-                    this.hasToPlayACard = true
                 } else if (card == 6) {
                     this.$socket.emit('cardSelected', {
                         gameId: this.game.id,
                         playedCard: card
+                    })
+                } else if (!this.hasOpponent) {
+                    this.hasToPlayACard = true
+                    this.$socket.emit('cardSelected', {
+                        gameId: this.game.id,
+                        playedCard: card + 10
                     })
                 } else {
                     this.hasToChooseAnOpponent = true
@@ -291,8 +364,11 @@
                     }
                 }
             },
-            choosableOpponent: function(player) {
-                return !player.hasHandMaid && !player.isDead && !((player.id == this.me.id) && (this.card != 5))
+            isAChoosableOpponent: function(player, card) {
+                return !(player.hasHandmaid || player.isDead || ((player.id == this.me.id) && (card != 5)))
+            },
+            choosableOpponents: function(card) {
+                return this.game.players.filter(player => this.isAChoosableOpponent(player, card))
             },
             hasChoosedOpponent: function() {
                 if (this.hasToGuess) {
@@ -304,24 +380,31 @@
             choosedOpponent: function() {
                 this.$socket.emit('cardSelected', {
                     gameId: this.game.id,
-                    playerCard: this.card,
+                    playedCard: this.card,
                     opponentId: this.opponent,
                     guessedCard: this.guess
                 })
+                
+                if (this.card == 2) {
+                    this.priestCard = true
+                }
 
                 this.guess = null
                 this.opponent = null
                 this.hasToGuess = false
                 this.hasToChooseAnOpponent = false
-                this.hasPlayedACard = false
+                this.hasToPlayACard = true
             },
             chancellorKeep: function(cardToKeep) {
-                this.chancellorCards = [this.me.card, ...this.me.nextCards].filter(card => card != cardToKeep)
+                let index = [this.me.card, ...this.me.nextCards].indexOf(cardToKeep)
+                this.chancellorCards = [this.me.card, ...this.me.nextCards]
+                this.chancellorCards.splice(index, 1)
                 this.hasToPutACardToTheEnd = true
                 this.hasToChooseACard = false
             },
             chancellorPlay: function(cardToTheEnd) {
                 this.hasToPutACardToTheEnd = false
+                this.hasToPlayACard = true
                 if (this.chancellorCards[0] == cardToTheEnd) {
                     this.chancellorCards.reverse()
                 }
@@ -352,14 +435,19 @@
         left: 44.25vw;
     }
 
+    .monNom {
+        display: inline;
+    }
+
     .icones {
         margin: 0;
         padding: 0;
     }
 
-    .icones > scan {
+    .icones > span {
         margin: 0;
         padding: 0;
+        display: inline;
     }
 
     .action {
