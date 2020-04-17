@@ -12,13 +12,17 @@
                     left: computeXPos(player, index) + 'vw'
                 }"
                 :elevation="isPlayerTurn(index) ? 24 : 0"
-                width="10vw"
-                :color="player.isDead ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)'"
+                width="12vw"
+                :color="player.isDead ? 'rgba(0, 0, 0, 0.4)' : ('rgba(255, 255, 255,' + (isPlayerTurn(index) ? ' 0.8' : ' 0.7') + ')')"
             >
-                <v-card-title>{{ player.username }}</v-card-title>
                 <v-card-text>
-                    <p class="icones">
-                        <span
+                    <div class="icones">
+                        <h2
+                            :style="{
+                                color: player.isDead ? 'white' : 'black'
+                            }"
+                        >{{ player.username + (player.isDead ? ' a perdu !' : '') }}</h2>
+                        <v-avatar
                             v-if="player.hasHandmaid"
                         >
                             <v-img
@@ -28,8 +32,8 @@
                                 title="Servante"
                                 width="3em"
                             ></v-img>
-                        </span>
-                        <span
+                        </v-avatar>
+                        <v-avatar
                             v-if="player.hasSpy"
                         >
                             <v-img
@@ -39,19 +43,68 @@
                                 title="Espionne"
                                 width="3em"
                             ></v-img>
-                        </span>
-                    </p>
+                        </v-avatar>
+                    </div>
                 </v-card-text>
             </v-card>
+        </div>
+
+        <div
+            class="deckDiscard"
+        >
+            <v-row
+                justify="center"
+                align="center"
+                class="fill-height"
+            >
+                <v-card
+                    dark
+                    width="143px"
+                    height="208px"
+                >
+                    <v-img
+                        :src="cardsBaseURL + lastPlayedCard.src"
+                        :alt="'Carte ' + lastPlayedCard.altTitle"
+                        :title="'La carte ' + lastPlayedCard.altTitle"
+                        width="100%"
+                        height="100%"
+                    ></v-img>
+                </v-card>
+                <v-card
+                    dark
+                    class="deck"
+                    width="143px"
+                    height="208px"
+                >
+                    <v-img
+                        :src="cardsBaseURL + '/back.png'"
+                        alt="La pioche"
+                        title="Nombre de cartes restantes"
+                        width="100%"
+                        height="100%"
+                    >
+                        <v-row
+                            align="center"
+                            justify="center"
+                            class="fill-height"
+                        >
+                            <v-col cols="12">
+                                <h2 class="nombreRestant">{{ game.deck.cards.length }}</h2>
+                            </v-col>
+                        </v-row>
+                    </v-img>
+
+                </v-card>
+            </v-row>
         </div>
 
         <div
             class="me"
             v-show="!isMyTurn"
         >
-            <h2 class="monNom">{{ me.username }}</h2>
-            <p class="icones">
-                <span
+            <div class="icones">
+                <h2 class="monNom">{{ me.username }}</h2>
+                <v-avatar
                     v-if="me.hasHandmaid"
                 >
                     <v-img
@@ -61,8 +114,8 @@
                         title="Servante"
                         width="3em"
                     ></v-img>
-                </span>
-                <span
+                </v-avatar>
+                <v-avatar
                     v-if="me.hasSpy"
                 >
                     <v-img
@@ -72,21 +125,41 @@
                         title="Espionne"
                         width="3em"
                     ></v-img>
-                </span>
-            </p>
+                </v-avatar>
+            </div>
             <v-card
                 width="220px"
                 height="320px"
                 elevation="24"
-                color="rgba(255, 255, 255, 0.7)"
+                :color="!me.isDead ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.4)'"
             >
                 <v-img
+                    v-if="!me.isDead"
                     :src="cardsBaseURL + cards[me.card].src"
                     :alt="'Carte ' + cards[me.card].altTitle"
                     width="100%"
                     height="100%"
                     :title="'La carte ' + cards[me.card].altTitle"
                 ></v-img>
+
+                <v-img
+                    v-else
+                    :src="cardsBaseURL + 'back.png'"
+                    alt="Dos de carte"
+                    width="100%"
+                    height="100%"
+                    title="Vous avez perdu !"
+                >
+                    <v-row
+                        class="fill-height"
+                        justify="center"
+                        align="center"
+                    >
+                        <v-col cols="12">
+                            <h2 class="defeat">Vous avez perdu !</h2>
+                        </v-col>
+                    </v-row>
+                </v-img>
             </v-card>
         </div>
 
@@ -95,7 +168,7 @@
             opacity=0.6
         >
             <h2
-                v-show="hasToPlayACard && !hasToDiscard"
+                v-show="hasToPlayACard"
                 class="action"
             >
                 Sélectionner une carte à jouer :
@@ -245,15 +318,25 @@
             >
                Voici la carte de {{ me.opponent.username }} :
             </h2>
-            <v-img
-                :src="cardsBaseURL + cards[me.opponent.card].src"
-                :alt="'Carte ' + cards[me.opponent.card].altTitle"
-                :title="'La carte ' + cards[me.opponent.card].altTitle"
-                width="220px"
-                height="320px"
-            ></v-img>
-
-            <v-btn @click="priestCard = false">
+            <v-row
+                justify="center"
+            >
+                <v-card
+                    width="220px"
+                    height="320px"
+                >
+                    <v-img
+                        :src="cardsBaseURL + cards[me.opponent.card].src"
+                        :alt="'Carte ' + cards[me.opponent.card].altTitle"
+                        :title="'La carte ' + cards[me.opponent.card].altTitle"
+                        width="100%"
+                        height="100%"
+                    ></v-img>
+                </v-card>
+            </v-row>
+            <v-btn
+                @click="priestCard = false"
+            >
                 Fermer
             </v-btn>
         </v-overlay>
@@ -298,15 +381,19 @@
                 cards: 'cards',
                 messages: 'messages'
             }),
-            ...mapGetters([
-                'isMyTurn'
-            ]),
+            ...mapGetters({
+                isMyTurn: 'isMyTurn'
+            }),
             myIndex: function() {
                 let index = 0
                 while (this.me.id != this.game.players[index].id) {
                     index++
                 }
                 return index
+            },
+            lastPlayedCard: function() {
+                let discardDeck = this.game.deck.discardDeck
+                return this.cards[discardDeck[discardDeck.length - 1]]
             }
         },
         methods: {
@@ -351,7 +438,7 @@
                         gameId: this.game.id,
                         playedCard: card
                     })
-                } else if (!this.hasOpponent) {
+                } else if (!this.hasOpponent(card)) {
                     this.hasToPlayACard = true
                     this.$socket.emit('cardSelected', {
                         gameId: this.game.id,
@@ -452,6 +539,31 @@
 
     .action {
         text-align: center;
+    }
+
+    .deck {
+        background-image: url("http://localhost:8080/images/back.png");
+        background-size: 100% 100%;
+        margin-left: 10px;
+    }
+
+    .deckDiscard {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        width: 100vw;
+        height: 90vh;
+    }
+
+    .nombreRestant {
+        text-align: center;
+        font-size: 3.5em;
+        color: #F0C300;
+    }
+
+    .defeat {
+        text-align: center;
+        color: #F0C300;
     }
 
 </style>

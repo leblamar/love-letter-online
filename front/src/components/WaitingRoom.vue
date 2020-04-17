@@ -67,7 +67,6 @@
         },
         methods: {
             launchGame: function() {
-                console.log("launching game")
                 this.$socket.emit('launchGame', this.game.id)
             }
         }

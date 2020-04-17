@@ -37,6 +37,7 @@ class Deck {
 
     // Discard card
     discardCard (card) {
+        console.log("Carte défausser/jouer : " + card)
         this.discardDeck.push(card)
     }
 
